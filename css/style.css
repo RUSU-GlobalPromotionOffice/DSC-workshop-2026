@@ -279,6 +279,86 @@ body {
     border-radius: 50%;
 }
 
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    
+    /* 綺麗な正円ボタン */
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 100;
+    
+    /* 矢印を真ん中に配置 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+/* マウスを乗せたときのミントグリーンエフェクト */
+.nav-btn:hover {
+    background-color: rgba(74, 246, 199, 0.15);
+    border-color: #4af6c7;
+    color: #4af6c7;
+    box-shadow: 0 0 15px rgba(74, 246, 199, 0.4);
+}
+
+/* 左右の配置位置 */
+.prev-btn { left: 40px; }
+.next-btn { right: 40px; }
+
+
+/* ========================================================
+   画面最下部中央のページ番号 ＆ ロゴフッター（PC用・縦並び中央）
+   ======================================================== */
+.slide-footer {
+    position: absolute;
+    bottom: 20px; /* 画面下からの距離（少し低めに調整） */
+    left: 50%;
+    transform: translateX(-50%); /* 完全に画面の真ん中に固定 */
+    
+    /* ページ番号とロゴを縦一列に並べて、中央揃えにする設定 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px; /* ページ番号とロゴの間の隙間 */
+    
+    z-index: 90;
+    pointer-events: none; /* スライド操作（クリック等）の邪魔をしない */
+}
+
+#slideFooter {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.4); /* 控えめな薄いグレー */
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    line-height: 1;
+}
+
+/* フッターロゴのサイズ調整（横長比率を保ったまま綺麗に中央配置） */
+.footer-logo {
+    display: block;
+    /* 高さを25pxに設定（横幅は10:1の比率で自動的に約250px幅になり、しっかり視認できます） */
+    height: 30px; 
+    width: auto;
+    opacity: 0.8; /* 研修内容を邪魔しない、ほどよい不透明度 */
+}
+
+/* スマホ用最終ロゴはPCでは隠しておく（※ここは変更なしです） */
+.mobile-final-logo-container {
+    display: none;
+}
+
 /* ========================================================
    スマホ対応：切り替えなし！上から下まで一気に読める縦スクロール形式
    ======================================================== */
@@ -360,5 +440,27 @@ body {
     /* ナビゲーションドットは不要なので非表示 */
     .nav-dots {
         display: none !important;
+    }
+	
+	.nav-btn,
+    .slide-footer {
+        display: none !important; /* スマホ画面ではPC用ボタンとPC用フッターを完全に消す */
+    }
+
+    /* 【追加】スマホ画面の一番下に表示されるロゴの設定 */
+    .mobile-final-logo-container {
+        display: flex !important; /* スマホ時のみ表示 */
+        justify-content: center;
+        align-serif: center;
+        width: 100%;
+        padding: 40px 24px 20px 24px; /* 上下にゆったりとした余白を確保 */
+        box-sizing: border-box;
+    }
+
+    .mobile-final-logo {
+        width: 85%;      /* スマホの画面幅に合わせて横幅を縮小 */
+        max-width: 400px; /* 大きくなりすぎないように上限を設定 */
+        height: auto;     /* 縦横比（約10:1）を維持 */
+        opacity: 0.6;
     }
 }
