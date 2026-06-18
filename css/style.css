@@ -1,0 +1,364 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/* 全体のリセットと基本スタイル */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    overflow: hidden; /* スクロールバーを隠す */
+}
+
+/* スライド全体のコンテナ */
+.slide-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+/* 各スライドの共通スタイル */
+.slide {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease-in-out; /* 切り替え時のフェードアニメーション */
+    text-align: center;
+}
+
+/* 現在表示中のスライド */
+.slide.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* スライド内の要素のデザイン */
+.slide h1 {
+    font-size: 4rem;
+    margin-bottom: 2rem;
+    color: #4af6c7;
+}
+.slide h2 {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    color: #4af6c7;
+}
+.slide h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #4af6c7;
+}
+.slide p {
+    font-size: 1.8rem;
+    line-height: 1.6;
+    color: #e0e0e0;
+    max-width: 800px;
+}
+.slide ul {
+    font-size: 1.8rem;
+    text-align: left;
+    display: inline-block;
+    line-height: 2;
+}
+/* 左右を横並びにするコンテナ */
+.slide-split {
+    display: flex;
+    width: 100%;
+    max-width: 1100px; /* スライド幅に合わせて広めに設定 */
+    margin: 1.5rem auto 0;
+    gap: 50px; /* 左右の間の溝（スペース） */
+    align-items: center; /* 左右の高さを中央で揃える */
+}
+
+/* 左半分の設定 */
+.split-left {
+    flex: 1.2; /* 少しだけ左のテキストエリアを広くする */
+    text-align: left;
+}
+
+/* 右半分の設定 */
+.split-right {
+    flex: 1; /* 写真エリア */
+    display: flex;
+    justify-content: center;
+}
+
+/* 写真とキャプションを包む枠 */
+.slide-photo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* 写真自体のスタイル */
+.slide-photo {
+    width: 100%;
+    max-height: 400px; /* スライドからはみ出さないように上限を設定 */
+    object-fit: cover; /* 枠線に合わせて綺麗にトリミング */
+    border-radius: 8px; /* 角を少し丸くしておしゃれに */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* 薄い影をつけて立体感を出す */
+}
+
+/* 写真の下につけるキャプション */
+.photo-caption {
+    font-size: 1.1rem;
+    color: #a0a0a0; /* 少し薄めのグレーにして主役（写真と文字）を引き立てる */
+    margin-top: 0.8rem;
+    text-align: center;
+    line-height: 1.4;
+}
+.caption-btn {
+    display: inline-block;
+    margin-top: 0.8rem; /* 上の文章との隙間 */
+    padding: 0.4rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #4af6c7; /* 文字色はアクセントカラー */
+    text-decoration: none; /* 下線を消す */
+    border: 1px solid #4af6c7; /* 枠線 */
+    border-radius: 20px; /* カプセル型の丸み */
+    transition: all 0.3s ease; /* アニメーションを滑らかに */
+    cursor: pointer;
+}
+
+/* マウスを乗せたときの効果 */
+.caption-btn:hover {
+    background-color: #4af6c7;
+    color: #1e1e1e; /* 文字色を反転 */
+    box-shadow: 0 0 12px rgba(74, 246, 199, 0.5); /* ほんのり光らせる */
+}
+
+/* テーマ別の背景色 */
+.theme-title { background: linear-gradient(135deg, #111 0%, #222 100%); }
+.theme-dark { background-color: #1e1e1e; }
+.theme-accent { background: linear-gradient(135deg, #0d3b66 0%, #001f3f 100%); }
+
+/* 操作ナビゲーション（画面下のドット） */
+.nav-dots {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 15px;
+    z-index: 10;
+}
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.dot.active {
+    background-color: #4af6c7;
+}
+
+/* リスト全体の枠組み */
+.point-list {
+    list-style: none; /* デフォルトの黒丸を消す */
+    text-align: left;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* 各リスト項目 */
+.point-list li {
+    margin-bottom: 1.8rem; /* 項目ごとの間隔 */
+    position: relative;
+    padding-left: 1.5rem; /* 左側に少し余白を作る */
+}
+
+/* 先頭のポインター（点）をCSSで綺麗に作る */
+.point-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.8rem; /* タイトルの位置に合わせる */
+    width: 8px;
+    height: 8px;
+    background-color: #4af6c7; /* アクセントカラー */
+    border-radius: 50%;
+}
+
+/* ポイント（タイトル）のスタイル */
+.point-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffffff;
+    display: block; /* 改行させる */
+    margin-bottom: 0.4rem;
+}
+
+/* 下の補足説明のスタイル */
+.point-desc {
+    font-size: 1.3rem !important; /* スライド全体のスタイルより少し小さく */
+    line-height: 1.5;
+    color: #b0b0b0; /* 文字色を少し薄くしてメリハリをつける */
+    padding-left: 0.2rem; /* タイトルより少し右に寄せる */
+}
+
+.image-title-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 左右の真ん中揃え */
+    justify-content: center; /* 上下の真ん中揃え */
+    width: 100%;
+    max-width: 800px; /* 全体の横幅が広がりすぎないように制限 */
+    margin: 0 auto;
+}
+
+/* 中央に配置するイラスト/写真のスタイル */
+.center-illust {
+    width: auto;
+    max-width: 100%;    /* スライドの幅からはみ出さないようにする */
+    height: auto;
+    max-height: 350px;  /* 縦幅を制限して、下の文字が入るスペースを確保 */
+    
+    margin-bottom: 2.5rem; /* イラストと下のタイトルとの間の隙間 */
+    
+    /* 透過PNGなどのイラストが暗い背景に沈まないように、必要に応じて軽い影をつける */
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4)); 
+}
+
+/* このスライド専用の文字調整（お好みで調整してください） */
+.image-title-container h1 {
+    font-size: 3.5rem;
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.image-title-container p {
+    font-size: 1.6rem;
+    color: #a0a0a0;
+}
+
+/* ========================================================
+   小さめの箇条書き（子リスト）用のスタイル
+   ======================================================== */
+.sub-point-list {
+    list-style: none; /* デフォルトの丸を消す */
+    margin-top: 0.5rem;   /* 上の文章との隙間 */
+    padding-left: 1.2rem; /* 左側に少しインデント（段差）をつける */
+}
+
+.sub-point-list li {
+    font-size: 1.3rem !important; /* 通常の文字より一回り小さく */
+    color: #FFFFFF;               /* 少し薄めのグレーにしてメリハリをつける */
+    line-height: 1.6;
+    margin-bottom: 0.4rem !important; /* 行同士の隙間を少し詰める */
+    position: relative;
+    padding-left: 1rem;
+}
+
+/* 小さめの箇条書き用のポインター（四角や中抜きの丸など） */
+.sub-point-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.6rem;
+    width: 5px;
+    height: 5px;
+    background-color: transparent;
+    border: 1px solid #4af6c7; /* ミントグリーンの「中抜き丸」にする */
+    border-radius: 50%;
+}
+
+/* ========================================================
+   スマホ対応：切り替えなし！上から下まで一気に読める縦スクロール形式
+   ======================================================== */
+/* ========================================================
+   スマホ対応：bodyの外側に余白を作り、カード風に並べる
+   ======================================================== */
+@media (max-width: 768px) {
+    /* 1. bodyに外側の余白（パディング）と背景色を設定 */
+    body {
+        overflow-y: auto !important; 
+        padding: 16px;          /* ← これで画面の上下左右に16pxの隙間（外枠）ができます */
+        background-color: #111111; /* ← 外枠の背景をスライドより一段暗くして引き締める */
+        box-sizing: border-box;
+    }
+
+    /* 2. スライドコンテナ：各ページを少し浮かせるための隙間 */
+    .slide-container {
+        height: auto !important; 
+        display: flex;
+        flex-direction: column; 
+        gap: 16px; /* ← スライドとスライドの間に16pxの隙間を作って独立させる */
+    }
+
+    /* 3. 各スライド：1枚の独立したカードのようなデザインにする */
+    .slide {
+        position: relative !important; 
+        top: auto !important;
+        left: auto !important;
+        display: block !important;     
+        text-align: left;
+        
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        visibility: visible !important;
+        
+        height: auto !important;
+        min-height: 0 !important; 
+        
+        /* スライド内の文字と外枠の間の余白 */
+        padding: 35px 24px; 
+        box-sizing: border-box;
+
+        /* 【追加】スライドをカード風に見せるための装飾 */
+        background-color: #1e1e1e !important; /* 元のダークテーマ背景 */
+        border-radius: 12px;                  /* 角を丸くして可愛いカード風に */
+        box-shadow: 0 4px 12px rgba(0,0,0,0.5); /* ほんのり影をつけて立体感を出す */
+    }
+	
+    /* 4. レイアウト・文字の調整 */
+    .slide h1, .slide h2, .slide h3 {
+        text-align: left;
+        width: 100%;
+    }
+    .slide h1 { font-size: 2.2rem; margin-bottom: 1.2rem; line-height: 1.3; }
+    .slide h2 { font-size: 1.8rem; margin-bottom: 1rem; }
+    .slide h3 { font-size: 1.3rem; margin-bottom: 1rem; }
+
+    /* 2カラム（左右分割）コンテナの縦並び化 */
+    .slide-split {
+        flex-direction: column; 
+        gap: 25px;
+        margin-top: 1.5rem;
+        align-items: flex-start;
+    }
+
+    .split-left, .split-right {
+        width: 100%;
+        flex: none;
+    }
+
+    .point-list { width: 100%; max-width: 100%; }
+    .point-title { font-size: 1.3rem; }
+    .point-desc { font-size: 1.05rem !important; }
+    
+    .slide-photo-container { align-items: flex-start; }
+    .slide-photo { max-height: 240px; width: 100%; object-fit: cover; }
+    .photo-caption { font-size: 0.85rem; text-align: left; align-items: flex-start; }
+
+    /* ナビゲーションドットは不要なので非表示 */
+    .nav-dots {
+        display: none !important;
+    }
+}
